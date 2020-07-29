@@ -1,6 +1,6 @@
 ENTITY accumulator IS
 PORT (clock, reset, enable : IN STD_LOGIC;
-		N, D, Q					: IN STD_LOGic;
+		Q, D, N					: IN STD_LOGic;
 		count						: OUT UNSIGNED(5 DOWNTO 0));
 END accumulator;
 
@@ -13,7 +13,12 @@ BEGIN
 	PROCESS(clk)
 	BEGIN
 		IF (rising_edge(clk) AND enable) THEN	-- if enable is set, on rising edge,
-			internalCount <= internalCount + 1;	-- increment internal count by 1
+			IF Q THEN
+				internalCount <= internalCount + 5;	-- for a quarter, increment internal count by 5 (25 cents)
+			ELSIF D THEN
+				internalCount <= internalCount + 2;	-- for a dime, increment internal count by 2 (10 cents)
+			ELSIF N THEN
+				internalCount <= internalCount + 1;	-- for a nickel, increment internal count by 1 (5 cents)
 		ELSIF (rising_edge(clk) THEN				-- if enable is not set, on rising edge,
 			count <= internalCount;					-- output count
 	END PROCESS;
