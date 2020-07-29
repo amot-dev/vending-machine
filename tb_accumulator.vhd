@@ -47,6 +47,10 @@ BEGIN
 		
 		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
 		enableSig <= '0';
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
 		WAIT;
 		
 	END PROCESS;
