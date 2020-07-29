@@ -31,6 +31,7 @@ BEGIN
 				END IF;
 			ELSE 
 				count <= internalCount;						-- if enable is not set, output count
+				internalCount <= (others => '0');		-- reset internal count
 			END IF;
 		END IF;
 	END PROCESS;

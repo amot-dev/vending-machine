@@ -51,6 +51,36 @@ BEGIN
 		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
 		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
 		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
+		
+		enableSig <= '1';
+		QSig <= '0';DSig <= '0';NSig <= '0';
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
+		QSig <= '0';DSig <= '0';NSig <= '1';
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
+		QSig <= '0';DSig <= '1';NSig <= '0';
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
+		QSig <= '0';DSig <= '1';NSig <= '1';
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
+		resetSig <= '1';
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
+		resetSig <= '0';
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
+		QSig <= '1';DSig <= '0';NSig <= '0';
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
+		QSig <= '1';DSig <= '0';NSig <= '1';
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
+		QSig <= '1';DSig <= '1';NSig <= '0';
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
+		QSig <= '1';DSig <= '1';NSig <= '1';
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
+		enableSig <= '0';
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
+		
 		WAIT;
 		
 	END PROCESS;
