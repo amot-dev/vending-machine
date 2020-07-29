@@ -1,3 +1,8 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.all;
+USE Ieee.numeric_std.all;
+
+
 ENTITY accumulator IS
 PORT (clock, reset, enable : IN STD_LOGIC;
 		Q, D, N					: IN STD_LOGic;

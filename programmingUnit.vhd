@@ -1,3 +1,8 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.all;
+USE Ieee.numeric_std.all;
+
+
 ENTITY programmingUnit IS
 PORT (clock, reset, set, enable : IN STD_LOGIC;
 		product						  : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
