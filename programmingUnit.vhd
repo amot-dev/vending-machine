@@ -29,8 +29,8 @@ BEGIN
 
 	PROCESS(clock)
 	BEGIN
-		IF (rising_edge(clock) THEN
-			IF (set OR setAsserted) THEN		-- if set is (or has been) asserted
+		IF (rising_edge(clock)) THEN
+			IF (set = '1' OR setAsserted = '1') THEN -- if set is (or has been) asserted
 				setAsserted <= '1';				-- set setAsserted to 1
 				enableAccumulator <= '0';		-- assume the accumulator needs to be turned off
 				
@@ -41,12 +41,14 @@ BEGIN
 			ELSE
 				enableAccumulator <= enable;
 			END IF;
+		END IF;
 	END PROCESS;
 	
 	PROCESS(reset)
 	BEGIN
-		IF (reset) THEN
+		IF (reset = '1') THEN
 			-- do something idk what yet
+		END IF;
 	END PROCESS;
 	
 	accumulator_0 : accumulator PORT MAP(clock => clock, reset => reset,

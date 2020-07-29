@@ -14,14 +14,14 @@ PORT (clock, reset, enable : IN STD_LOGIC;
 		count						: OUT UNSIGNED(5 DOWNTO 0));
 END COMPONENT;
 
-SIGNAL clockSig, resetSig, enableSig : STD_LOGIC;
-SIGNAL QSig, DSig, NSig					 : STD_LOGIC;
-SIGNAL countSig							 : UNSIGNED(5 DOWNTO 0);
+SIGNAL clkSig, resetSig, enableSig : STD_LOGIC;
+SIGNAL QSig, DSig, NSig				  : STD_LOGIC;
+SIGNAL countSig						  : UNSIGNED(5 DOWNTO 0);
 
 BEGIN
 
 	DUT : accumulator
-	PORT MAP(clock => clockSig, reset => resetSig, enable => enableSig,
+	PORT MAP(clock => clkSig, reset => resetSig, enable => enableSig,
 				Q => QSig, D => DSig, N => NSig, count => countSig);
 
 	PROCESS IS

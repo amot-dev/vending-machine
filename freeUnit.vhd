@@ -19,9 +19,9 @@ BEGIN
 	PROCESS(clock)
 	BEGIN
 		IF rising_edge(clock) THEN
-			totalInsterted <= "ZZZZZZ";	-- as this unit dispenses products for free, set money-related outputs to floating
+			totalInserted <= "ZZZZZZ";	-- as this unit dispenses products for free, set money-related outputs to floating
 			change <= "ZZZZZZ";
-			done <= '1';						-- dispense product
+			done <= '1';					-- dispense product
 		END IF;
 	END PROCESS;
 
