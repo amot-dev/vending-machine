@@ -30,9 +30,12 @@ SIGNAL accumulatorOut : UNSIGNED(5 DOWNTO 0);	-- output from the accumulator
 
 BEGIN
 
-	PROCESS(clock)
+	PROCESS(clock, reset)
 	BEGIN
-		IF (rising_edge(clock)) THEN
+		IF (reset = '1') THEN					-- if a reset signal is sent, return done but do not enable writing to SRAM
+			done <= '1';
+			writeEnable <= '0';
+		ELSIF (rising_edge(clock)) THEN
 			IF (doneWait = '1') THEN			-- if the circuit is done and waiting for the data
 				IF (doneWaitCounter = 0) THEN
 					done <= '1';					-- if clock cycles left until data is ready is 0, assert done
@@ -45,20 +48,13 @@ BEGIN
 				setAsserted <= '1';				-- set setAsserted to 1
 				enableAccumulator <= '0';		-- assume the accumulator needs to be turned off
 				
-				writeEnable <= '1';
-				address <= product;
-				data <= accumulatorOut;
-				doneWait <= '1';
+				writeEnable <= '1';				-- enable writing to SRAM
+				address <= product;				-- output address to write to
+				data <= accumulatorOut;			-- send out data to write
+				doneWait <= '1';					-- prepare to wait until all outputs are in sync
 			ELSE
 				enableAccumulator <= enable;
 			END IF;
-		END IF;
-	END PROCESS;
-	
-	PROCESS(reset)
-	BEGIN
-		IF (reset = '1') THEN
-			-- do something idk what yet
 		END IF;
 	END PROCESS;
 	

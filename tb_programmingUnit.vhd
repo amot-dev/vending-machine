@@ -42,7 +42,7 @@ BEGIN
 		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
 		QDNSig <= "001";
 		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
-		resetSig <= '1';
+		resetSig <= '0';															-- to test reset, set to '1', else, set to '0'
 		QDNSig <= "011";
 		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
 		resetSig <= '0';
