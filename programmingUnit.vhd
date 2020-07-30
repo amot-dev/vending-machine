@@ -21,42 +21,49 @@ PORT (clock, reset, enable : IN STD_LOGIC;
 		count						: OUT UNSIGNED(5 DOWNTO 0));
 END COMPONENT;
 
-SIGNAL setAsserted : STD_LOGIC := '0';				-- whether or not set has been asserted
-SIGNAL doneWait :	STD_LOGIC := '0';					-- signal to indicate that the circuit is done and waiting for the data
-SIGNAL doneWaitCounter : INTEGER := 2;				-- number of clock cycles left until data is ready
+SIGNAL doneWait 		  	 :	STD_LOGIC := '0';			-- signal to indicate that the circuit is done and waiting for the data
+SIGNAL doneWaitCounter 	 : INTEGER := 2;				-- number of clock cycles left until data is ready
+SIGNAL doneAsserted 		 : STD_LOGIC := '0'; 		-- used to check if done is asserted
 
-SIGNAL enableAccumulator : STD_LOGIC;				-- enables or disables the accumulator
-SIGNAL accumulatorOut : UNSIGNED(5 DOWNTO 0);	-- output from the accumulator
+SIGNAL enableAccumulator : STD_LOGIC;					-- enables or disables the accumulator
+SIGNAL accumulatorOut 	 : UNSIGNED(5 DOWNTO 0);	-- output from the accumulator
+
+
 
 BEGIN
 
 	PROCESS(clock, reset)
 	BEGIN
 		IF (reset = '1') THEN					-- if a reset signal is sent, return done but do not enable writing to SRAM
-			done <= '1';
+			doneAsserted <= '1';
 			writeEnable <= '0';
-		ELSIF (rising_edge(clock)) THEN
-			IF (doneWait = '1') THEN			-- if the circuit is done and waiting for the data
-				IF (doneWaitCounter = 0) THEN
-					done <= '1';					-- if clock cycles left until data is ready is 0, assert done
-					doneWaitCounter <= 2;		-- reset counter
-				ELSE
-					doneWaitCounter <= doneWaitCounter - 1;	-- else, decrement the counter
-				END IF;
 			
-			ELSIF (set = '1' OR setAsserted = '1') THEN -- else if set is (or has been) asserted
-				setAsserted <= '1';				-- set setAsserted to 1
+		ELSIF (rising_edge(clock)) THEN
+			IF (doneAsserted = '1') THEN		-- if done has been asserted
+				doneWaitCounter <= 2;			-- reset all relevant signals
+				doneWait <= '0';
+				doneAsserted <= '0';
+			ELSIF (doneWait = '1') THEN		-- if the circuit is done and waiting for the data
+				IF (doneWaitCounter = 1) THEN
+					doneAsserted <= '1';			-- assert done on first clock cycle after accumulator is done
+					data <= accumulatorOut;		-- transfer accumulator to data
+				END IF;
+				doneWaitCounter <= doneWaitCounter - 1; -- decrement the counter
+			ELSIF (set = '1') THEN 				-- if set is asserted
 				enableAccumulator <= '0';		-- assume the accumulator needs to be turned off
-				
+				data <= accumulatorOut;			-- transfer accumulator to data
 				writeEnable <= '1';				-- enable writing to SRAM
-				address <= product;				-- output address to write to
-				data <= accumulatorOut;			-- send out data to write
 				doneWait <= '1';					-- prepare to wait until all outputs are in sync
-			ELSE
+			ELSIF (doneWait = '0') THEN		-- if the circuit has not already finished, enable accumulator
 				enableAccumulator <= enable;
 			END IF;
 		END IF;
 	END PROCESS;
+	
+	done <= doneAsserted;
+	address <= product;
+	
+	
 	
 	accumulator_0 : accumulator PORT MAP(clock => clock, reset => reset,
 													 enable => enableAccumulator, count => accumulatorOut,
