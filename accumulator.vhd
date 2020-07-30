@@ -30,11 +30,12 @@ BEGIN
 					internalCount <= internalCount + 1;	-- for a nickel, increment internal count by 1 (5 cents)
 				END IF;
 			ELSE 
-				count <= internalCount;						-- if enable is not set, output count
-				internalCount <= (others => '0');		-- reset internal count
+				internalCount <= (others => '0');		-- if enable is not set, reset internal count
 			END IF;
 		END IF;
 	END PROCESS;
+	
+	count <= internalCount;
 	
 END Behaviour;
 		
