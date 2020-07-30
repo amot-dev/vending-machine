@@ -34,29 +34,40 @@ BEGIN
 
 	PROCESS IS
 	BEGIN
-		clkSig <= '0';wait for 10 ns;
-		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
-		enableSig <= '1';productSig <= "10";
-		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
-		QDNSig <= "101";
-		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
-		QDNSig <= "001";
-		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
-		resetSig <= '0';															-- to test reset, set to '1', else, set to '0'
-		QDNSig <= "011";
-		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
-		resetSig <= '0';
-		QDNSig <= "100";
-		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
-		QDNSig <= "010";
-		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
-		QDNSig <= "000";
-		setSig <= '1';
+		clkSig <= '0';wait for 5 ns;
+		wait for 5 ns;
 		
-		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
-		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
-		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 10 ns;
-		enableSig <= '0';
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		enableSig <= '1';productSig <= "10";wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		
+		QDNSig <= "101";wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		QDNSig <= "001";wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		resetSig <= '0';QDNSig <= "011";wait for 5 ns;					-- to test reset, set to '1', else, set to '0'
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		resetSig <= '0';QDNSig <= "100";wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait	for 5 ns;
+		QDNSig <= "010";wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		setSig <= '1';QDNSig <= "000";wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		setSig <= '0';wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		enableSig <= '0';wait for 5 ns;
+		
 		WAIT;
 		
 	END PROCESS;
