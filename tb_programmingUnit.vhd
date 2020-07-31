@@ -41,7 +41,6 @@ BEGIN
 		enableSig <= '1';productSig <= "10";wait for 5 ns;
 		
 		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
-		
 		QDNSig <= "101";wait for 5 ns;
 		
 		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
