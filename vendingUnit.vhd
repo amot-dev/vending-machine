@@ -5,7 +5,7 @@ USE Ieee.numeric_std.all;
 
 ENTITY vendingUnit IS
 PORT (clock, reset, enable : IN STD_LOGIC;
-		price						: IN STD_LOGIC_VECTOR(5 DOWNTO 0);
+		price						: IN UNSIGNED(5 DOWNTO 0);
 		QDN						: IN STD_LOGic_VECTOR(2 DOWNTO 0);
 		totalInserted			: OUT UNSIGNED(5 DOWNTO 0);
 		change					: OUT UNSIGNED(5 DOWNTO 0);
@@ -31,7 +31,7 @@ BEGIN
 			IF (accumulatorOut >= price) THEN			-- if the user has inserted enough or more than enough money
 				change <= accumulatorOut - price;		-- get change value
 				IF (QDN = "000") THEN
-					doneAssserted <= '1';					-- if the user has stopped inserting money, assert done
+					doneAsserted <= '1';						-- if the user has stopped inserting money, assert done
 				END IF;
 			ELSE
 				change <= (others => '0');					-- return change as 0 if not enough money has been inserted yet
