@@ -16,8 +16,8 @@ BEGIN
 
 uIn <= unsigned'(A3 & A2 & A1 & A0);
 uOut <= UIn when UIn < 5 else
-		  UIn + 3 when UIn < 10 else
-		  UIn;
+		  UIn + 3 when UIn < 16 else
+		  "0000";
 
 S0 <= uOut(0);
 S1 <= uOut(1);
