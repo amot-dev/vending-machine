@@ -8,10 +8,22 @@ PORT (clock, reset, hard_reset, start, funct, prod, set : IN STD_LOGIC;
 		Q, D, N														  : IN STD_LOGic;
 		change0, change1, change2								  : OUT UNSIGNED(3 DOWNTO 0);
 		runTotal0, runTotal1, runTotal2						  : OUT UNSIGNED(3 DOWNTO 0);
-		total0, total1, total2									  : OUT UNSIGNED(3 DOWNTO 0);
+		total0, total1, total2									  : OUT UNSIGNED(3 DOWNTO 0));
 END vendingMachine;
 
 ARCHITECTURE Behaviour OF vendingMachine IS
+
+COMPONENT SRAM IS
+	PORT
+	(
+		address		: IN STD_LOGIC_VECTOR (1 DOWNTO 0);
+		clock		: IN STD_LOGIC  := '1';
+		data		: IN STD_LOGIC_VECTOR (5 DOWNTO 0);
+		rden		: IN STD_LOGIC  := '1';
+		wren		: IN STD_LOGIC ;
+		q		: OUT STD_LOGIC_VECTOR (5 DOWNTO 0)
+	);
+END COMPONENT;
 
 COMPONENT programmingUnit IS
 PORT (clock, reset, set, enable : IN STD_LOGIC;
