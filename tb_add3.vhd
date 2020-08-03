@@ -1,5 +1,5 @@
-LIBRARY IEEE;
-USE IEEE.STD_LOGIC_1164.all;
+LIBRARY ieee;
+USE ieee.std_logic_1164.all;
 
 
 ENTITY tb_add3 IS
@@ -20,7 +20,6 @@ DUT : add3
 PORT MAP(A0 => A0Sig, A1 => A1Sig, A2 => A2Sig, A3 => A3Sig,
 			S0 => S0Sig, S1 => S1Sig, S2 => S2Sig, S3 => S3Sig);
 
--- apply stimulus with 20ns delays
 PROCESS IS
 BEGIN
 
