@@ -25,6 +25,13 @@ COMPONENT SRAM IS
 	);
 END COMPONENT;
 
+COMPONENT toBCD IS
+PORT (binaryIn 	  : IN UNSIGNED(7 DOWNTO 0);
+		decimal0		  : OUT UNSIGNED(3 DOWNTO 0);
+		decimal1		  : OUT UNSIGNED(3 DOWNTO 0);
+		decimal2		  : OUT UNSIGNED(3 DOWNTO 0));
+END COMPONENT;
+
 COMPONENT programmingUnit IS
 PORT (clock, reset, set, enable : IN STD_LOGIC;
 		product						  : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
