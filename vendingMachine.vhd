@@ -4,11 +4,13 @@ USE Ieee.numeric_std.all;
 
 
 ENTITY vendingMachine IS
-PORT (clock, reset, hard_reset, start, funct, prod, set : IN STD_LOGIC;
-		Q, D, N														  : IN STD_LOGic;
-		change0, change1, change2								  : OUT UNSIGNED(3 DOWNTO 0);
-		runTotal0, runTotal1, runTotal2						  : OUT UNSIGNED(3 DOWNTO 0);
-		total0, total1, total2									  : OUT UNSIGNED(3 DOWNTO 0));
+PORT (clock, reset, hardReset, start, set : IN STD_LOGIC;
+		funct 										: IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+		prod 											: IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+		Q, D, N										: IN STD_LOGic;
+		change0, change1, change2				: OUT UNSIGNED(3 DOWNTO 0);
+		runTotal0, runTotal1, runTotal2		: OUT UNSIGNED(3 DOWNTO 0);
+		total0, total1, total2					: OUT UNSIGNED(3 DOWNTO 0));
 END vendingMachine;
 
 ARCHITECTURE Behaviour OF vendingMachine IS
@@ -59,6 +61,32 @@ PORT (clock, enable : IN STD_LOGIC;
 		done			  : OUT STD_LOGIC);
 END COMPONENT;
 
+SIGNAL state : STD_LOGIC_VECTOR(2 DOWNTO 0) := "000";	-- the current state of the FSM (0 - Idle, 1 - Programming, 2 - Display, 3 - Vending,  4 - Free, 5 - Hard Reset)
+SIGNAL allDone : STD_LOGIC;									-- whether or not the current process is finished
+
 BEGIN
+
+	PROCESS(clk) IS												-- this process is only for switching states
+	BEGIN
+		IF (reset = '1') THEN									-- on soft reset, reset is passed to all components
+			state <= "000";										-- in addition, the VMC state is set to idle
+		ELSIF rising_edge(clock) THEN
+			IF (hardReset = '1') THEN
+				-- do hard reset stuff
+			ELSIF (allDone = '1') THEN							-- if the current process is done, set state to idle
+				state <= "000";
+			ELSIF (start = '1' AND state = "000") THEN	-- if the VMC is in the idle state and start is asserted
+				IF (funct = "00") THEN							-- change state based on funct
+					state <= "001";
+				ELSIF (funct = "01" THEN
+					state <= "010";
+				ELSIF (funct = "10" THEN
+					state <= "011";
+				ELSIF (funct = "11" THEN
+					state <= "100";
+				END IF;
+			END IF;
+		END IF;
+	END PROCESS;
 
 END Behaviour;
