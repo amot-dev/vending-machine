@@ -32,16 +32,16 @@ BEGIN
 	PROCESS IS
 	BEGIN
 		clkSig <= '0';wait for 5 ns;
-		wait for 5 ns;
+		priceSig <= "001001";QDNSig <= "100";wait for 5 ns;
 		
 		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
-		wait for 5 ns;
+		enableSig <= '1';wait for 5 ns;
 		
 		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
-		wait for 5 ns;
+		QDNSig <= "010";wait for 5 ns;
 		
 		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
-		wait for 5 ns;
+		QDNSig <= "111";wait for 5 ns;
 		
 		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
 		wait for 5 ns;
@@ -50,13 +50,13 @@ BEGIN
 		wait for 5 ns;
 		
 		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait	for 5 ns;
-		wait for 5 ns;
+		QDNSig <= "000";wait for 5 ns;
 		
 		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
 		wait for 5 ns;
 		
 		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
-		wait for 5 ns;
+		enableSig <= '0';wait for 5 ns;
 		
 		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
 		wait for 5 ns;
