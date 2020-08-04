@@ -26,7 +26,7 @@ BEGIN
 
 	PROCESS(clock)
 	BEGIN															-- there is no reset involved because the only reset this machine needs is resetting the accumulator
-		IF (rising_edge(clock) and enable = '1' and price /= (others => '0')) THEN	-- machine only works when inputs are synced
+		IF (rising_edge(clock) and enable = '1' and price /= "000000") THEN	-- machine only works when inputs are synced
 			IF (accumulatorOut >= price) THEN			-- if the user has inserted enough or more than enough money
 				change <= accumulatorOut - price;		-- get change value
 				IF (QDN = "000") THEN
