@@ -19,15 +19,13 @@ SIGNAL doneAsserted : STD_LOGIC := '0';-- whether or not done is asserted
 BEGIN
 
 	PROCESS(clock)
-	BEGIN											-- no reset is needed for this circuit (not even need for a reset input)
+	BEGIN										-- no reset is needed for this circuit (not even need for a reset input)
 		IF (rising_edge(clock) and enable = '1') THEN
-			IF (doneAsserted <= '1') THEN	-- unassert done after one clock cycle
-				doneAsserted <= '0';
-			ELSE
-				totalInserted <= "ZZZZZZ";	-- as this unit dispenses products for free, set money-related outputs to floating
-				change <= "ZZZZZZ";
-				doneAsserted <= '1';			-- dispense product
-			END IF;
+			totalInserted <= "ZZZZZZ";	-- as this unit dispenses products for free, set money-related outputs to floating
+			change <= "ZZZZZZ";
+			doneAsserted <= '1';			-- dispense product
+		ELSIF rising_edge(clock) THEN
+			doneAsserted <= '0';			-- unassert done when unit is not enabled
 		END IF;
 	END PROCESS;
 	

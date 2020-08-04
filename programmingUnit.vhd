@@ -31,10 +31,11 @@ BEGIN
 	BEGIN
 		IF (reset = '1') THEN					-- if a reset signal is sent, return done but do not enable writing to SRAM
 			doneAsserted <= '1';					-- reset does not need enable to be on, because as long as writeEnable is 0, the programming unit does nothing
-			writeEnable <= '0';
+			
 		ELSIF (rising_edge(clock) AND enable = '1') THEN
 			IF (doneAsserted = '1') THEN		-- if done has been asserted
 				doneAsserted <= '0';				-- unassert it (ensures done is only asserted for one clock cycle)
+				writeEnable <= '0';				-- disable writing
 			ELSIF (set = '1') THEN 				-- if set is asserted
 				enableAccumulator <= '0';		-- assume the accumulator needs to be turned off
 				data <= accumulatorOut;			-- transfer accumulator to data
