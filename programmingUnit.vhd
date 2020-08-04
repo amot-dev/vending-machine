@@ -30,8 +30,7 @@ BEGIN
 	PROCESS(clock, reset)
 	BEGIN
 		IF (reset = '1') THEN					-- if a reset signal is sent, return done but do not enable writing to SRAM
-			doneAsserted <= '1';					-- reset does not need enable to be on, because as long as writeEnable is 0, the programming unit does nothing
-			
+			doneAsserted <= '1';					-- reset does not need enable to be on, because as long as writeEnable is 0, the programming unit does nothing	
 		ELSIF (rising_edge(clock) AND enable = '1') THEN
 			IF (doneAsserted = '1') THEN		-- if done has been asserted
 				doneAsserted <= '0';				-- unassert it (ensures done is only asserted for one clock cycle)
@@ -43,6 +42,11 @@ BEGIN
 				doneAsserted <= '1';				-- assert done
 			ELSIF (doneAsserted = '0') THEN	-- if the circuit has not already finished, enable accumulator
 				enableAccumulator <= '1';
+			END IF;
+		ELSIF rising_edge(clock) THEN
+			IF (doneAsserted = '1') THEN		-- be able to unassert done even if enable is 0
+				doneAsserted <= '0';
+				writeEnable <= '0';
 			END IF;
 		END IF;
 	END PROCESS;

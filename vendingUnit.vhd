@@ -35,6 +35,10 @@ BEGIN
 			ELSE
 				change <= (others => '0');					-- return change as 0 if not enough money has been inserted yet
 			END IF;
+		ELSIF rising_edge(clock) THEN
+			IF (doneAsserted <= '1') THEN					-- unassert done when enable is 0
+				doneAsserted <= '0';
+			END IF;
 		END IF;
 	END PROCESS;
 	

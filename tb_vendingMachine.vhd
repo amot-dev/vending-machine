@@ -214,7 +214,9 @@ BEGIN
 		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
 		wait for 5 ns;
 		
+		-- Run a hard reset
 		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		hardResetSig <= '1';
 		wait for 5 ns;
 		
 		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
@@ -224,6 +226,36 @@ BEGIN
 		wait for 5 ns;
 		
 		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		hardResetSig <= '0';
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		wait for 5 ns;
+		
+		-- Display the price of product 11 (should be 0 after hard reset)
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		startSig <= '1';functSig <= "01";
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		startSig <= '0';prodSig <= "11";
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		resetSig <= '1';
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		resetSig <= '0';
 		wait for 5 ns;
 		
 		WAIT;

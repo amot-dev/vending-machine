@@ -62,6 +62,11 @@ SIGNAL state : STD_LOGIC_VECTOR(2 DOWNTO 0) := "000";	-- the current state of th
 SIGNAL programmingEnable, vendingEnable, freeEnable : STD_LOGIC := '0';	-- enables for the various components
 SIGNAL allDone : STD_LOGIC := '0';							-- whether or not the current process is finished
 
+SIGNAL setInterm				 : STD_LOGIC;								-- an intermediate signal for set - used for hard reset functionality
+SIGNAL prodInterm				 : STD_LOGIC_VECTOR(1 DOWNTO 0);		-- an intermediate signal for prod - used for hard reset functionality
+
+SIGNAL QDNCombined			 : STD_LOGic_VECTOR(2 DOWNTO 0);		-- combines Q, D, and N into a single bus, used by the various units
+
 SIGNAL currentPrice 			 : UNSIGNED(5 DOWNTO 0);				-- contains the system price (a quarter is 5) of the currently selected product
 SIGNAL currentPriceSTD  	 : STD_LOGIC_VECTOR(5 DOWNTO 0);		-- used for conversion from sram
 
@@ -95,19 +100,30 @@ BEGIN
 		IF (reset = '1') THEN									-- on soft reset, reset is passed to all components
 			state <= "000";										-- in addition, the VMC state is set to idle
 		ELSIF rising_edge(clock) THEN
-			IF (hardReset = '1') THEN
-				-- do hard reset stuff
-			ELSIF (allDone = '1') THEN							-- if the current process is done, set state to idle
-				state <= "000";
-			ELSIF (start = '1' AND state = "000") THEN	-- if the VMC is in the idle state and start is asserted
-				IF (funct = "00") THEN							-- change state based on funct
-					state <= "001";
-				ELSIF (funct = "01") THEN
-					state <= "010";
-				ELSIF (funct = "10") THEN
-					state <= "011";
-				ELSIF (funct = "11") THEN
-					state <= "100";
+			IF (hardReset = '1') THEN							-- hard reset needs to be asserted for 4 clock cycles (to cycle through all products)
+				state <= "001";									-- activate programming mode to reset all products (will not revert to idle until hardReset is 0)
+				setInterm <= '1';									-- makes the set intermediate signal equal to 1 for use by the hard reset signal
+				IF (prodInterm = "11") THEN					-- cycle prodInterm through all products (with set being true, and QDN presumed to be 0, this will reset all prices)
+					prodInterm <= "00";
+				ELSE
+					prodInterm <= std_logic_vector(unsigned(prodInterm) + 1);
+				END IF;
+			ELSE														-- if hard reset is not asserted, assume normal functionality:
+				setInterm <= set;									-- makes the set intermediate signal equal to set for use by the programming unit
+				prodInterm <= prod;								-- makes the prod intermediate signal equal to prod for use by the programming unit
+				
+				IF (allDone = '1') THEN							-- if the current process is done, set state to idle
+					state <= "000";
+				ELSIF (start = '1' AND state = "000") THEN	-- if the VMC is in the idle state and start is asserted
+					IF (funct = "00") THEN							-- change state based on funct
+						state <= "001";
+					ELSIF (funct = "01") THEN
+						state <= "010";
+					ELSIF (funct = "10") THEN
+						state <= "011";
+					ELSIF (funct = "11") THEN
+						state <= "100";
+					END IF;
 				END IF;
 			END IF;
 		END IF;
@@ -166,8 +182,10 @@ BEGIN
 	END PROCESS;
 	
 	-- set the allDone signal based on whether the unit running is done or not
-	allDone <= '1' when (programmingDone = '1' AND state = "001") OR (vendingDone = '1' AND state = "010") OR (freeDone = '1' AND state = "100") else
+	allDone <= '1' when (programmingDone = '1' AND state = "001") OR (vendingDone = '1' AND state = "011") OR (freeDone = '1' AND state = "100") else
 				  '0';
+	
+	QDNCombined <= std_logic_vector'(Q & D & N);	-- combine Q, D, and N
 	
 	currentPrice <= unsigned(currentPriceSTD);	-- convert currentPrice from STD_LOGIC_VECTOR to UNSIGNED
 	
@@ -190,16 +208,16 @@ BEGIN
 									 decimal0 => runTotalOut0, decimal1 => runTotalOut1, decimal2 => runTotalOut2);
 	
 	-- Programming unit
-	programmingUnit_0 : programmingUnit PORT MAP(clock => clock, reset => reset, set => set, enable => programmingEnable,
-																product => prod, QDN => std_logic_vector'(Q & D & N), writeEnable => writeEnableOut,
+	programmingUnit_0 : programmingUnit PORT MAP(clock => clock, reset => reset, set => setInterm, enable => programmingEnable,
+																product => prodInterm, QDN => QDNCombined, writeEnable => writeEnableOut,
 																address => addressOut, data => dataOut, done => programmingDone);
 	-- Vending unit
 	vendingUnit_0 : vendingUnit PORT MAP(clock => clock, reset => reset, enable => vendingEnable,
-													 price => currentPrice, QDN => std_logic_vector'(Q & D & N),
+													 price => currentPrice, QDN => QDNCombined,
 													 totalInserted => totalInsertedOut, change => changeOut, done => vendingDone);
 	-- Free unit
 	freeUnit_0 : freeUnit PORT MAP(clock => clock, enable => freeEnable,
-											 price => currentPrice, QDN => std_logic_vector'(Q & D & N),
+											 price => currentPrice, QDN => QDNCombined,
 											 totalInserted => totalInsertedFree, change => changeFree, done => freeDone);
 
 END Behaviour;
