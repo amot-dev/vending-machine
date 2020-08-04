@@ -24,7 +24,7 @@ SIGNAL prodSig							  							  : STD_LOGic_VECTOR(1 DOWNTO 0);
 SIGNAL QSig, DSig, NSig 										  : STD_LOGic;
 SIGNAL change0Sig, change1Sig, change2Sig					  : UNSIGNED(3 DOWNTO 0);
 SIGNAL runTotal0Sig, runTotal1Sig, runTotal2Sig			  : UNSIGNED(3 DOWNTO 0);
-SIGNAL total0Sig, total1Sig, total2Sig						  : UNSIGNED(3 DOWNTO 0));
+SIGNAL total0Sig, total1Sig, total2Sig						  : UNSIGNED(3 DOWNTO 0);
 
 BEGIN
 
@@ -38,25 +38,180 @@ BEGIN
 
 	PROCESS IS
 	BEGIN
+	
 		clkSig <= '0';wait for 5 ns;
 		wait for 5 ns;
 		
+		-- Program the price of product 00 as 8 (40 cents)
 		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		startSig <= '1';functSig <= "00";
 		wait for 5 ns;
 		
 		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		startSig <= '0';prodSig <= "00";
+		QSig <= '1';DSig <= '1';NSig <= '1';
 		wait for 5 ns;
 		
 		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		QSig <= '0';
 		wait for 5 ns;
 		
 		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		DSig <= '0';
 		wait for 5 ns;
 		
 		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		setSig <= '1';
+		NSig <= '0';
 		wait for 5 ns;
 		
 		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait	for 5 ns;
+		setSig <= '0';
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		wait for 5 ns;
+		
+		-- Display the price of product 00
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		startSig <= '1';functSig <= "01";
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		startSig <= '0';prodSig <= "00";
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		resetSig <= '1';
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		resetSig <= '0';
+		wait for 5 ns;
+		
+		-- Vend product 00 for free
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		startSig <= '1';functSig <= "11";
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		startSig <= '0';prodSig <= "00";
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		wait for 5 ns;
+		
+		-- Program product 11 as 24 (120 cents)
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		startSig <= '1';functSig <= "00";
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		startSig <= '0';prodSig <= "11";
+		QSig <= '0';DSig <= '0';NSig <= '0';
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		QSig <= '0';DSig <= '1';NSig <= '0';
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		QSig <= '1';DSig <= '1';NSig <= '0';
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		QSig <= '0';DSig <= '0';NSig <= '1';
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		QSig <= '1';DSig <= '0';NSig <= '0';
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		setSig <= '1';
+		QSig <= '0';DSig <= '0';NSig <= '0';
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		setSig <= '0';
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		wait for 5 ns;
+		
+		-- Vend product 11 for 24 (120 cents)
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		startSig <= '1';functSig <= "10";
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		startSig <= '0';prodSig <= "11";
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		QSig <= '0';DSig <= '0';NSig <= '0';
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		QSig <= '1';DSig <= '0';NSig <= '0';
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		QSig <= '0';DSig <= '0';NSig <= '0';
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
+		wait for 5 ns;
+		
+		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
 		wait for 5 ns;
 		
 		clkSig <= '1';wait for 10 ns;clkSig <= '0';wait for 5 ns;
